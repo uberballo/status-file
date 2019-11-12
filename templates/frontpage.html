@@ -4,12 +4,15 @@
          <title>Reaktor pre-assignment</title>
      </head>
      <body>
-       <p>Please upload a status file found from /var/lib/dpkg/ or use default file</p>
+       <p>You may upload your own status file. Filename has to be either status or status.real</p>
          <form action="/handleUpload" method="post" enctype="multipart/form-data">
              Choose the file: <input type="file" name="statusFile"/><BR>
                  <input type="submit" value="Upload"/>
          </form>
-         
+         <p> You may also use the default status file </p>
+         <form action="/packages" >
+                 <input type="submit" value="paina"/>
+         </form>
      </body>
  </html>
                                                     

@@ -1,11 +1,13 @@
 import os
 from flask import Flask, request, render_template, url_for, redirect
 from werkzeug.utils import secure_filename
-from packageParser import parsePackages2,parsePackages, findDependants
+from packageParser import parsePackages, findDependants
 
 app = Flask(__name__)
 os.makedirs(os.path.join(app.instance_path, 'status'), exist_ok=True)
 packages  = []
+#unused
+statusPath = ""
 #findDependants(packages)
 
 @app.route("/", methods=['GET', 'POST'])
@@ -14,6 +16,9 @@ def fileFrontPage():
 
 @app.route("/packages")
 def allPackages():
+    global packages
+    if not packages:
+        packages = parsePackages("status")
     return render_template('layout.html', packages = packages)
 
 @app.route("/packages/<packageName>")
