@@ -1,35 +1,45 @@
 import os
 from flask import Flask, request, render_template, url_for, redirect
-from packageParser import parsePackages, findDependants
-#from testi import findDependants
+from werkzeug.utils import secure_filename
+from packageParser import parsePackages2,parsePackages, findDependants
+
 app = Flask(__name__)
+os.makedirs(os.path.join(app.instance_path, 'status'), exist_ok=True)
+packages  = []
+#findDependants(packages)
 
-packages = parsePackages()
-findDependants(packages)
-
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def fileFrontPage():
+    return render_template('frontpage.html')
+
+@app.route("/packages")
+def allPackages():
     return render_template('layout.html', packages = packages)
 
-@app.route("/<packageName>")
+@app.route("/packages/<packageName>")
 def singlePackage(packageName):
     shownPackage = next(package for package in packages if package.name ==
                         packageName)
     #print(shownPackage.name)
-    print(shownPackage.descriptionBeginning)
+    #print(shownPackage.descriptionBeginning)
     #print(shownPackage.dependencies)
     return render_template('package.html', package=shownPackage)
 
 @app.route("/handleUpload", methods=['POST'])
 def handleFileUpload():
-    path2 = '/var/lib/dpkg/status'
+    if 'statusFile' in request.files:
+        statusFile = request.files['statusFile']
+        if statusFile.filename == 'status' or statusFile.filename =='status.real':
+            fileName = secure_filename(statusFile.filename)
+            path = os.path.join(app.instance_path, 'status', fileName)
+            statusFile.save(path)
 
-    if 'photo' in request.files:
-        photo = request.files['photo']
-        if photo.filename != '':
-            cwd = os.getcwd()
-            photo.save(os.path.join(cwd, photo.filename))
-    return redirect(url_for('fileFrontPage'))
+            global packages
+            packages = parsePackages(path)
+            findDependants(packages)
+
+            return render_template('layout.html', packages = packages)
+    return render_template('frontpage.html')
 
 if __name__ == "__main__":
     app.run()

@@ -25,9 +25,9 @@ class Paketti:
         self.dependants.append(other)
 
 
-def parsePackages():
+def parsePackages(fileLocation):
     listOfPackages = []
-    with open("status", "r") as f:
+    with open(fileLocation, "r") as f:
         name = ""
         descriptionBeginning = ""
         descriptionRest= ""
