@@ -1,0 +1,22 @@
+
+<html>
+    <head>
+        <title>Simple file upload using Python Flask</title>
+    </head>
+    <body>
+        <form action="/handleUpload" method="post" enctype="multipart/form-data">
+            Choose the file: <input type="file" name="photo"/><BR>
+                <input type="submit" value="Upload"/>
+        </form> 
+
+        <tbody>
+                {% for package in packages %}
+                    <ul>
+                            <li>
+                                    <a href="{{url_for('singlePackage', packageName = package.name)}}">  {{ package.name }} </a>
+                            </li>
+                    </ul>
+                {% endfor %}
+        </tbody>
+    </body>
+</html>

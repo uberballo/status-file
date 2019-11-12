@@ -1,0 +1,22 @@
+
+<html>
+    <head>
+            <title> {{ package.name }} </title>
+    </head>
+    <body>
+            <h2>{{ package.name }} </h2>
+            <p>{{ package.description }} </p>
+                {% for dependency in package.dependencies%}
+                    <ul>
+                            <li>{{ dependency }}</li>
+                    </ul>
+                {% endfor %}
+                <p>dependants</p>
+                {% for dependant in package.dependants%}
+                    <ul>
+                            <li>{{ dependant}}</li>
+                    </ul>
+                {% endfor %}
+                
+    </body>
+</html>
