@@ -1,12 +1,11 @@
 import os
 from flask import Flask, request, render_template, url_for, redirect
-from testi import paketit2
+from packageParser import parsePackages, findDependants
 #from testi import findDependants
-import testi
 app = Flask(__name__)
 
-packages = paketit2()
-testi.findDependants(packages)
+packages = parsePackages()
+findDependants(packages)
 
 @app.route("/")
 def fileFrontPage():
@@ -17,7 +16,7 @@ def singlePackage(packageName):
     shownPackage = next(package for package in packages if package.name ==
                         packageName)
     #print(shownPackage.name)
-    #print(shownPackage.description)
+    print(shownPackage.descriptionBeginning)
     #print(shownPackage.dependencies)
     return render_template('package.html', package=shownPackage)
 

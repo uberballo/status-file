@@ -1,11 +1,20 @@
-
 <html>
     <head>
             <title> {{ package.name }} </title>
+<style>
+.content{
+        display: none;
+}
+</style>
     </head>
     <body>
             <h2>{{ package.name }} </h2>
-            <p>{{ package.description }} </p>
+            <p>{{ package.descriptionBeginning}} </p>
+            <button type="button" class="collapsible">More </button>
+            <div class="content">
+                    <p>{{package.descriptionRest}} </p>
+            </div>
+                <p>Dependencies</p>
                 {% for dependency in package.dependencies%}
                     <ul>
                             <li>{{ dependency }}</li>
@@ -18,5 +27,21 @@
                     </ul>
                 {% endfor %}
                 
+                <script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
     </body>
 </html>
