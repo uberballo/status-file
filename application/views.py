@@ -26,9 +26,13 @@ def allPackages():
 
 @app.route("/packages/<packageName>")
 def singlePackage(packageName):
-    shownPackage = next(package for package in packages if package.name ==
-                        packageName)
-    return render_template('package.html', package=shownPackage)
+    try:
+        shownPackage = next(package for package in packages if package.name ==
+                            packageName)
+        return render_template('package.html', package=shownPackage)
+    except:
+        errorMessage = "Error {} occured".format(sys.exc_info()[0])
+        return render_template('frontpage.html', errorMessage = errorMessage)
 
 @app.route("/handleUpload", methods=['POST'])
 def handleFileUpload():

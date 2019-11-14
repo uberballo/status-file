@@ -1,18 +1,53 @@
 
 <html>
     <head>
-        <title>Simple file upload using Python Flask</title>
+        <title>Index</title>
+<style>
+*{
+   font-family:helvetica;
+}
+
+body{
+    background-color:#5CDB95
+}
+
+.container{
+    text-align:center;
+    display: table;
+    margin: auto;
+    padding: 10px;
+    border: 3px Gray;
+    background-color: #05386B;
+    border-radius:10px;
+}
+.packageList{
+    list-style-type:none;
+    background-color:#379683;
+    color:#EDF5E1;
+    padding: 5px;
+    border-radius:10px;
+
+    
+}
+a:link {
+        color:black;
+}
+</style>
     </head>
     <body>
-            <a href="{{url_for('fileFrontPage')}}"><p>Back to frontpage </p> </a>
+            <div class = "container">
+            <a href="{{url_for('fileFrontPage')}}">
+             <button tpye="button" >Back to frontpage</button>
+            </a>
         <tbody>
                 {% for package in packages %}
-                    <ul>
+                    <ul class = "packageList">
                             <li>
                                     <a href="{{url_for('singlePackage', packageName = package.name)}}">  {{ package.name }} </a>
                             </li>
                     </ul>
                 {% endfor %}
         </tbody>
+            </div>
     </body>
 </html>

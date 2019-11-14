@@ -2,20 +2,45 @@
  <html>
      <head>
          <title>Reaktor pre-assignment</title>
+<style>
+*{
+    font-family: helvetica;
+
+}
+.container{
+        margin: auto;
+        padding: 10px;
+        border: 3px Gray;
+        background-color: #05386B;
+        border-radius: 25px;
+        display: table;
+}
+
+body{
+        background-color:#5CDB95;
+}
+
+p,form {
+        color:#EDF5E1
+}
+
+</style>
      </head>
      <body> 
+             <div class= "container">
              {% if errorMessage %}
              <p>{{errorMessage}}</p>
              {% endif %}
-       <p>You may upload your own status file. Filename has to be either status or status.real</p>
+       <p class = "guideText">You may upload your own status file. Filename has to be either status or status.real</p>
          <form action="/handleUpload" method="post" enctype="multipart/form-data">
              Choose the file: <input type="file" name="statusFile"/><BR>
                  <input type="submit" value="Upload"/>
          </form>
          <p> You may also use the default status file </p>
          <form action="/packages" >
-                 <input type="submit" value="paina"/>
+                 <input type="submit" value="Default status"/>
          </form>
+      </div>
      </body>
  </html>
                                                     
