@@ -19,7 +19,7 @@ def fileFrontPage(errorMessage = ""):
 def allPackages():
     global packages
     if not packages:
-        path = os.path.join(sys.path[0],"application","status.real")
+        path = "status.real" 
         packages = parsePackages(path)
         findDependants(packages)
     return render_template('index.html', packages = packages)
