@@ -2,14 +2,12 @@ import os
 import sys
 from flask import Flask, request, render_template, url_for, redirect
 from werkzeug.utils import secure_filename
-from packageParser import parsePackages, findDependants
+from application import app
+from application.packageParser import parsePackages, findDependants
 
-app = Flask(__name__)
 os.makedirs(os.path.join(app.instance_path, 'status'), exist_ok=True)
 packages  = []
-#unused
 statusPath = ""
-#findDependants(packages)
 
 @app.route("/" )
 def fileFrontPage(errorMessage = ""):
@@ -21,7 +19,8 @@ def fileFrontPage(errorMessage = ""):
 def allPackages():
     global packages
     if not packages:
-        packages = parsePackages("status")
+        path = os.path.join(sys.path[0],"application","status.real")
+        packages = parsePackages(path)
         findDependants(packages)
     return render_template('index.html', packages = packages)
 
@@ -47,9 +46,6 @@ def handleFileUpload():
 
                 return render_template('index.html', packages = packages)
         except:
-            #errorMessage = "Error "+sys.exc_info()[0]+" occured"
             errorMessage = "Error {} occured".format(sys.exc_info()[0])
             return render_template('frontpage.html', errorMessage = errorMessage)
 
-if __name__ == "__main__":
-    app.run()
