@@ -7,7 +7,8 @@
 }
 </style>
     </head>
-    <body>
+        <body>
+                <a href="{{url_for('allPackages')}}"> <p>Back to index </p></a>
             <h2>{{ package.name }} </h2>
 
             <p>{{ package.descriptionBeginning}} </p>
@@ -18,13 +19,13 @@
                 <p>Dependencies</p>
                 {% for dependency in package.dependencies%}
                     <ul>
-                            <li>{{ dependency }}</li>
+                            <a href="{{url_for('singlePackage', packageName = dependency)}}"><li> {{ dependency}}</li></a>
                     </ul>
                 {% endfor %}
                 <p>dependants</p>
                 {% for dependant in package.dependants%}
                     <ul>
-                            <li>{{ dependant}}</li>
+                            <a href="{{url_for('singlePackage', packageName = dependant)}}"><li> {{ dependant }}</li></a>
                     </ul>
                 {% endfor %}
                 
