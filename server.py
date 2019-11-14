@@ -19,6 +19,7 @@ def allPackages():
     global packages
     if not packages:
         packages = parsePackages("status")
+        findDependants(packages)
     return render_template('layout.html', packages = packages)
 
 @app.route("/packages/<packageName>")
