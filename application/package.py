@@ -5,6 +5,7 @@ class Package:
         self.descriptionAll= descriptionAll
         self.dependencies= dependencies
         self.dependants = []
+        self.href = "/packages/{}".format(name)
 
     def getAll(self):
         return (self.name, self.descriptionBeginning, self.dependencies)
