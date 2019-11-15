@@ -20,19 +20,23 @@ def parsePackages(fileLocation):
                    foundDependencies = re.sub('\s|\((.*?)\)', '', foundDependencies)
                    #For now both of the dependencies is included
                    dependencies = re.split(',|\|', foundDependencies)
-
+                   #removing duplicates
+                   dependencies = list(set(dependencies))
                 if re.match(r'^Description: (.*)', line):
                    descriptionBeginning= re.search(r'(?<=^Description: ).*', line).group()
                    descriptionFound = True
             else:
                 descriptionRest= descriptionRest+ line
 
-            if line == "\n":
-                package = Package(name, descriptionBeginning,descriptionRest, dependencies)
-                listOfPackages.append(package)
-                descriptionFound = False
-                name,descriptionBeginning,descriptionFound = "","",""
-                dependencies = []
+                if line == "\n" or re.match(r'([A-Z].*:).*',line):
+                    descriptionRest = re.sub(r'(Original-Maintainer: ).*', '',
+                                             descriptionRest)
+                    package = Package(name, descriptionBeginning,descriptionRest, dependencies)
+                    listOfPackages.append(package)
+                    descriptionFound = False
+                    name,descriptionBeginning,descriptionFound = "","",""
+                    dependencies = []
+
         listOfPackages.sort(key=lambda package: package.name)
         return listOfPackages
 
