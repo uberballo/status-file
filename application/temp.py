@@ -7,17 +7,11 @@ def parsePackages(fileLocation):
         name = ""
         descriptionBeginning = ""
         descriptionRest= ""
-        description = ""
         dependencies = []
         descriptionFound = False
-        pattern1 = re.compile(r'(?<=^Description: )((.*\n)+)(?=[A-Z]*[a-z]*-+[A-Z][a-z]*[:]* )',re.MULTILINE)
-        #Doesnt work with homepage line
-        pattern = re.compile(r'(?<=^Description: )(.*\n)*(?=([A-Z]+[a-z]*[-]*[A-Z][a-z]*: ))')
-        pattern2 = re.compile(r'i(.+\n)+(?=[A-Z][a-z]*: )')
 
         for line in f:
             if not descriptionFound:
-
                 if re.match(r'^Package: (.*)$', line):
                    name = re.search(r'(?<=Package: ).*', line).group()
 
@@ -30,25 +24,18 @@ def parsePackages(fileLocation):
                    dependencies = list(set(dependencies))
                 if re.match(r'^Description: (.*)', line):
                    descriptionBeginning= re.search(r'(?<=^Description: ).*', line).group()
-                   description =  line
                    descriptionFound = True
             else:
-                description = description + line
+                descriptionRest= descriptionRest+ line
 
-                if line == "\n" :
-                    print(description)
-                    description = re.search(pattern ,description)
-                    if description:
-                        description =description.group()
-                        description = re.sub('Homepage: .*','',description)
-
-                    package = Package(name, descriptionBeginning,description, dependencies)
+                if line == "\n" or re.match(r'([A-Z].*:).*',line):
+                    descriptionRest = re.sub(r'(Original-Maintainer: ).*', '',
+                                             descriptionRest)
+                    package = Package(name, descriptionBeginning,descriptionRest, dependencies)
                     listOfPackages.append(package)
                     descriptionFound = False
                     name,descriptionBeginning,descriptionFound = "","",""
-                    description = ""
                     dependencies = []
-
 
         listOfPackages.sort(key=lambda package: package.name)
         return listOfPackages

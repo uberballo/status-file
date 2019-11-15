@@ -13,7 +13,7 @@ class Package:
         return self.name
 
     def getDescription(self):
-        return self.description
+        return ("{}{}").format(self.descriptionBeginning, self.descriptionRest)
 
     def getDependencies(self):
         return self.dependencies

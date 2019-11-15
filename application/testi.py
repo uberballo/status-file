@@ -10,10 +10,7 @@ def parsePackages(fileLocation):
         description = ""
         dependencies = []
         descriptionFound = False
-        pattern1 = re.compile(r'(?<=^Description: )((.*\n)+)(?=[A-Z]*[a-z]*-+[A-Z][a-z]*[:]* )',re.MULTILINE)
-        #Doesnt work with homepage line
-        pattern = re.compile(r'(?<=^Description: )(.*\n)*(?=([A-Z]+[a-z]*[-]*[A-Z][a-z]*: ))')
-        pattern2 = re.compile(r'i(.+\n)+(?=[A-Z][a-z]*: )')
+        pattern = re.compile(r'(?<=^Description: )((.+\n.*)+)(?=[A-Z][a-z]*-[A-Z]\w*[:]* )')
 
         for line in f:
             if not descriptionFound:
@@ -30,17 +27,17 @@ def parsePackages(fileLocation):
                    dependencies = list(set(dependencies))
                 if re.match(r'^Description: (.*)', line):
                    descriptionBeginning= re.search(r'(?<=^Description: ).*', line).group()
-                   description =  line
+                   description = description + line
                    descriptionFound = True
             else:
                 description = description + line
 
                 if line == "\n" :
-                    print(description)
                     description = re.search(pattern ,description)
-                    if description:
-                        description =description.group()
-                        description = re.sub('Homepage: .*','',description)
+                    if (description):
+                        description = description.group()
+                    else:
+                        description = None
 
                     package = Package(name, descriptionBeginning,description, dependencies)
                     listOfPackages.append(package)

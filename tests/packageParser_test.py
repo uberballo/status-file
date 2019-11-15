@@ -26,7 +26,6 @@ def findCorrectPackage(parsedPackages,name):
 def test_packagesAreSortedCorrectly(parsedPackages):
     temporaryCorrectPackages = correctPackages
     temporaryCorrectPackages.sort()
-    print(temporaryCorrectPackages)
     assert(all([a == b.name for a, b in zip(temporaryCorrectPackages,
                                             parsedPackages)]))
 
@@ -54,3 +53,13 @@ def test_packageDependantsAreCorrect(parsedPackages):
     findDependants(parsedPackages)
     testPackage = findCorrectPackage(parsedPackages, "libtext-charwidth-perl")
     assert(testPackage.dependants[0] == "libtext-wrapi18n-perl")
+
+def test_packageDescriptionIsCorrect(parsedPackages):
+    testPackage = findCorrectPackage(parsedPackages, "libws-commons-util-java")
+    correctDescription = """
+    Common utilities from the Apache Web Services Project
+ This is a small collection of utility classes, that allow high
+ performance XML processing based on SAX.
+    """
+    assert(testPackage.descriptionRest.strip() == correctDescription.strip())
+
