@@ -39,15 +39,15 @@ def test_packagewithnodepenciescontainsnodependencies(parsedPackages):
 
 def test_packageContainsCorrectDependencies(parsedPackages):
     testPackage = findCorrectPackage(parsedPackages, "tcpd")
-    testPackageDepencies = testPackage.dependencies
+    testPackageDependencies= testPackage.getDependencies()
     correctDependencies = [
         "libc6",
         "libwrap0"
     ]
-
-    assert(len(testPackageDepencies) == len(correctDependencies))
+    assert(len(testPackageDependencies) == len(correctDependencies))
+    # Fails sometimes
     assert(all(a == b for a,b in
-               zip(correctDependencies, testPackageDepencies)))
+               zip(correctDependencies, testPackageDependencies)))
 
 def test_packageDependantsAreCorrect(parsedPackages):
     findDependants(parsedPackages)
@@ -61,5 +61,5 @@ def test_packageDescriptionIsCorrect(parsedPackages):
  This is a small collection of utility classes, that allow high
  performance XML processing based on SAX.
     """
-    assert(testPackage.descriptionRest.strip() == correctDescription.strip())
+    assert(testPackage.descriptionAll.strip() == correctDescription.strip())
 

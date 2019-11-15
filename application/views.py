@@ -40,16 +40,17 @@ def handleFileUpload():
     if 'statusFile' in request.files:
         statusFile = request.files['statusFile']
         try:
-            if statusFile.filename == 'status' or statusFile.filename =='status.real' :
-                fileName = secure_filename(statusFile.filename)
-                path = os.path.join(app.instance_path, 'status', fileName)
-                statusFile.save(path)
+            if statusFile.filename == 'status' or statusFile.filename =='status.real':
+                if isinstance(statusFile, str):
+                    fileName = secure_filename(statusFile.filename)
+                    path = os.path.join(app.instance_path, 'status', fileName)
+                    statusFile.save(path)
 
-                global packages
-                packages = parsePackages(path)
-                findDependants(packages)
+                    global packages
+                    packages = parsePackages(path)
+                    findDependants(packages)
 
-                return render_template('index.html', packages = packages)
+                    return render_template('index.html', packages = packages)
             else:
                 return render_template('frontpage.html', errorMessage =
                                        "Invalid file")
