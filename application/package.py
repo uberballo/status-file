@@ -1,8 +1,8 @@
 class Package:
-    def __init__(self, name, descriptionBeginning, descriptionRest, dependencies):
+    def __init__(self, name, descriptionBeginning, descriptionAll, dependencies):
         self.name = name
         self.descriptionBeginning= descriptionBeginning
-        self.descriptionRest= descriptionRest
+        self.descriptionAll= descriptionAll
         self.dependencies= dependencies
         self.dependants = []
 

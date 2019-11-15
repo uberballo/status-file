@@ -1,41 +1,7 @@
 <html>
     <head>
             <title> {{ package.name }} </title>
-<style>
-*{
-        font-family:helvetica;
-}
-body{
-        background-color:#5CDB95
-}
-.content{
-        display: none;
-}
-.container{
-    text-align:center;
-    display: table;
-    margin: auto;
-    padding: 10px;
-    border: 3px Gray; 
-    background-color: #05386B;
-    border-radius:10px;
-
-}
-p{
-        color:#EDF5E1
-}
-.dependencyList, .dependantList{
-    list-style-type:none;
-    background-color:#379683;
-    color:#EDF5E1;
-    padding: 5px;
-    border-radius:10px;
-   
-    
-}
-
-
-</style>
+    <link rel="stylesheet" type="text/css" href="../static/styles/package.css" media="all">
     </head>
         <body>
                 <div class = "container">
@@ -43,35 +9,47 @@ p{
                         <a href="{{url_for('allPackages')}}"><button type="button">Back to index</button> </a>
             <h2>{{ package.name }} </h2>
 
-            <p>{{ package.descriptionBeginning}} </p>
             <button type="button" class="collapsible">More </button>
-            <div class="content">
-                    <p>{{package.descriptionRest}} </p>
+            <div class="shortDescriptionContent">
+            <p>{{ package.descriptionBeginning}} </p>
             </div>
+            <div class="allDescriptionContent">
+                    <p>{{package.descriptionAll}} </p>
+            </div>
+                {% if package.dependencies %}
                 <p>Dependencies</p>
                 {% for dependency in package.dependencies%}
                     <ul class = "dependencyList">
                             <a href="{{url_for('singlePackage', packageName = dependency)}}"><li> {{ dependency}}</li></a>
                     </ul>
                 {% endfor %}
+                {% endif %}
+
+                {% if package.dependants %}
                 <p>dependants</p>
                 {% for dependant in package.dependants%}
+
                     <ul class = "dependantList">
                             <a href="{{url_for('singlePackage', packageName = dependant)}}"><li> {{ dependant }}</li></a>
                     </ul>
                 {% endfor %}
+                {% endif %}
                 </div>
+
                 <script>
 var coll = document.getElementsByClassName("collapsible");
 var i;
 for (i = 0; i < coll.length; i++){
   coll[i].addEventListener("click", function() {
     this.classList.toggle("active");
-    var content = this.nextElementSibling;
-    if (content.style.display === "block") {
-      content.style.display = "none";
+    var descriptionAll= document.getElementsByClassName("allDescriptionContent")[0];
+    var descriptionShort= document.getElementsByClassName("shortDescriptionContent")[0];
+    if (descriptionAll.style.display === "block") {
+      descriptionAll.style.display = "none";
+      descriptionShort.style.display = "block";
     } else {
-      content.style.display = "block";
+      descriptionAll.style.display = "block";
+      descriptionShort.style.display = "none";
     }
   });
 }

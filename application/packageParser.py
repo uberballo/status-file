@@ -6,14 +6,11 @@ def parsePackages(fileLocation):
     with open(fileLocation, "r") as f:
         name = ""
         descriptionBeginning = ""
-        descriptionRest= ""
         description = ""
         dependencies = []
         descriptionFound = False
-        pattern1 = re.compile(r'(?<=^Description: )((.*\n)+)(?=[A-Z]*[a-z]*-+[A-Z][a-z]*[:]* )',re.MULTILINE)
         #Doesnt work with homepage line
         pattern = re.compile(r'(?<=^Description: )(.*\n)*(?=([A-Z]+[a-z]*[-]*[A-Z][a-z]*: ))')
-        pattern2 = re.compile(r'i(.+\n)+(?=[A-Z][a-z]*: )')
 
         for line in f:
             if not descriptionFound:
@@ -36,7 +33,6 @@ def parsePackages(fileLocation):
                 description = description + line
 
                 if line == "\n" :
-                    print(description)
                     description = re.search(pattern ,description)
                     if description:
                         description =description.group()
