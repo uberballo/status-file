@@ -39,7 +39,7 @@ def handleFileUpload():
     if 'statusFile' in request.files:
         statusFile = request.files['statusFile']
         try:
-            if statusFile.filename == 'status' or statusFile.filename =='status.real' or statusFile.filename == 'testStatus':
+            if statusFile.filename == 'status' or statusFile.filename =='status.real' :
                 fileName = secure_filename(statusFile.filename)
                 path = os.path.join(app.instance_path, 'status', fileName)
                 statusFile.save(path)
