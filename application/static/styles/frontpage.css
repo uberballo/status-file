@@ -6,16 +6,16 @@
         margin: auto;
         padding: 10px;
         border: 3px Gray;
-        background-color: #05386B;
+        background-color:#dcac98;
         border-radius: 25px;
         display: table;
 }
 
 body{
-        background-color:#5CDB95;
+        background-color:#eee2dc8f;
 }
 
 p,form {
-        color:#EDF5E1
+        color:#0c0909;
 }
 

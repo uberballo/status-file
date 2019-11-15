@@ -2,7 +2,7 @@
          font-family:helvetica;
  }
  body{
-         background-color:#5CDB95
+         background-color:#eee2dc8f;
  }
 
 .content{
@@ -14,22 +14,22 @@
      margin: auto;
      padding: 10px;
      border: 3px Gray; 
-     background-color: #05386B;
+     background-color: #dcac98;
      border-radius:10px;
- 
+     width:50%
  }
  p{
-         color:#EDF5E1
+         color:#0c0909
  }
  .dependencyList, .dependantList{
      list-style-type:none;
-     background-color:#379683;
+     background-color:#ec7266;
      color:#EDF5E1;
      padding: 5px;
      border-radius:10px;
  
  
  }
-                 .allDescriptionContent{
-                         display:none;
-                 }    
+ .allDescriptionContent{
+         display:none;
+ }    

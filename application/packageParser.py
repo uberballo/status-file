@@ -22,7 +22,7 @@ def parsePackages(fileLocation):
                    foundDependencies = re.search(r'(?<=Depends: ).*', line).group()
                    foundDependencies = re.sub('\s|\((.*?)\)', '', foundDependencies)
                    #For now both of the dependencies is included
-                   dependencies = re.split(',|\|', foundDependencies)
+                   dependencies = re.split(',', foundDependencies)
                    #removing duplicates
                    dependencies = list(set(dependencies))
                 if re.match(r'^Description: (.*)', line):
