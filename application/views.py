@@ -16,13 +16,14 @@ def fileFrontPage(errorMessage = ""):
     return render_template('frontpage.html',errorMessage= errorMessage)
 
 @app.route("/packages")
-def allPackages():
+def allPackages(errorMessage = ""):
     global packages
     if not packages:
         path = "status.real" 
         packages = parsePackages(path)
         findDependants(packages)
-    return render_template('index.html', packages = packages)
+    return render_template('index.html', packages = packages,errorMessage =
+                           errorMessage)
 
 @app.route("/packages/<packageName>")
 def singlePackage(packageName):
@@ -32,7 +33,7 @@ def singlePackage(packageName):
         return render_template('package.html', package=shownPackage)
     except:
         errorMessage = "Error {} occured".format(sys.exc_info()[0])
-        return render_template('frontpage.html', errorMessage = errorMessage)
+        return render_template('index.html',packages = packages, errorMessage = errorMessage)
 
 @app.route("/handleUpload", methods=['POST'])
 def handleFileUpload():

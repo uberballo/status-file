@@ -5,7 +5,11 @@
         <link rel="stylesheet" href= "../static/styles/index.css">
     </head>
     <body>
+
             <div class = "container">
+            {% if errorMessage %}
+          <p>{{errorMessage}}</p>
+          {% endif %}
             <a href="{{url_for('fileFrontPage')}}">
              <button tpye="button" >Back to frontpage</button>
             </a>
