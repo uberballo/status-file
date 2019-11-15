@@ -129,3 +129,16 @@ Suggests: default-jre, equivs
 Description: Base of all Java packages
  This package must be installed in the system if a Java environment
 
+Package: libtext-charwidth-perl
+Status: install ok installed
+Multi-Arch: foreign
+Priority: optional
+Section: java
+Installed-Size: 242
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: all
+Version: 0.43ubuntu2
+Suggests: default-jre, equivs
+Description: test test test
+tes test tes
+

@@ -31,6 +31,8 @@ def parsePackages(fileLocation):
                 package = Package(name, descriptionBeginning,descriptionRest, dependencies)
                 listOfPackages.append(package)
                 descriptionFound = False
+                name,descriptionBeginning,descriptionFound = "","",""
+                dependencies = []
         listOfPackages.sort(key=lambda package: package.name)
         return listOfPackages
 

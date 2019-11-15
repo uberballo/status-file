@@ -1,5 +1,5 @@
 import pytest
-from application.packageParser import parsePackages
+from application.packageParser import parsePackages,findDependants
 
 correctPackages = [
     "java-common",
@@ -7,6 +7,7 @@ correctPackages = [
     "libbsf-java",
     "libplexus-sec-dispatcher-java",
     "libslf4j-java",
+    "libtext-charwidth-perl",
     "libtext-wrapi18n-perl",
     "libws-commons-util-java",
     "python-pkg-resources",
@@ -17,26 +18,28 @@ correctPackages = [
 def parsedPackages():
     return parsePackages("testStatus")
 
+def findCorrectPackage(parsedPackages,name):
+    return  next(package for package in parsedPackages if
+                                      package.name ==
+                                      name)
+
 def test_packagesAreSortedCorrectly(parsedPackages):
     temporaryCorrectPackages = correctPackages
     temporaryCorrectPackages.sort()
-    packages= parsedPackages
-    assert(all([a == b.name for a, b in zip(temporaryCorrectPackages, packages)]))
+    print(temporaryCorrectPackages)
+    assert(all([a == b.name for a, b in zip(temporaryCorrectPackages,
+                                            parsedPackages)]))
 
 def test_packagesHaveCorrectLength(parsedPackages):
     assert(len(correctPackages) == len(parsedPackages))
 
 def test_packagewithnodepenciescontainsnodependencies(parsedPackages):
-    testpackage =  next(package for package in parsedPackages if
-                                      package.name ==
-                                      "libws-commons-util-java")
-    testpackagedepencies = testpackage.dependencies
-    assert(len(testpackagedepencies) == 0)
+    testPackage = findCorrectPackage(parsedPackages, "libws-commons-util-java")
+    testPackageDepencies = testPackage.dependencies
+    assert(len(testPackageDepencies) == 0)
 
 def test_packageContainsCorrectDependencies(parsedPackages):
-    testPackage =  next(package for package in parsedPackages if
-                                      package.name ==
-                                      "tcpd")
+    testPackage = findCorrectPackage(parsedPackages, "tcpd")
     testPackageDepencies = testPackage.dependencies
     correctDependencies = [
         "libc6",
@@ -47,3 +50,7 @@ def test_packageContainsCorrectDependencies(parsedPackages):
     assert(all(a == b for a,b in
                zip(correctDependencies, testPackageDepencies)))
 
+def test_packageDependantsAreCorrect(parsedPackages):
+    findDependants(parsedPackages)
+    testPackage = findCorrectPackage(parsedPackages, "libtext-charwidth-perl")
+    assert(testPackage.dependants[0] == "libtext-wrapi18n-perl")

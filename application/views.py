@@ -39,7 +39,7 @@ def handleFileUpload():
     if 'statusFile' in request.files:
         statusFile = request.files['statusFile']
         try:
-            if statusFile.filename == 'status' or statusFile.filename =='status.real':
+            if statusFile.filename == 'status' or statusFile.filename =='status.real' or statusFile.filename == 'testStatus':
                 fileName = secure_filename(statusFile.filename)
                 path = os.path.join(app.instance_path, 'status', fileName)
                 statusFile.save(path)
@@ -49,6 +49,9 @@ def handleFileUpload():
                 findDependants(packages)
 
                 return render_template('index.html', packages = packages)
+            else:
+                return render_template('frontpage.html', errorMessage =
+                                       "Invalid file")
         except:
             errorMessage = "Error {} occured".format(sys.exc_info()[0])
             return render_template('frontpage.html', errorMessage = errorMessage)
