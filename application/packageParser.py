@@ -1,4 +1,5 @@
 import re
+from time import time
 from application.package import Package
 
 def parsePackages(fileLocation):
@@ -59,3 +60,9 @@ def findDependants(listOfPackages):
                              x.name), None)
                 if dependant:
                     dependant.addDependant(package.name)
+
+def handlePackageDependencies(listOfPackages):
+    for package in listOfPackages:
+        for dependecy in package.dependencies:
+            if dependency in listOfPackages:
+                package.addDependency(dependency)

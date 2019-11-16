@@ -1,58 +1,74 @@
 <html>
-    <head>
-            <title> {{ package.name }} </title>
-    <link rel="stylesheet" type="text/css" href="../static/styles/package.css" media="all">
-    </head>
-        <body>
-                <div class = "container">
+  <head>
+    <title>{{ package.name }}</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../static/styles/package.css"
+      media="all"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <a href="{{url_for('allPackages')}}"
+        ><button type="button">Back to index</button>
+      </a>
+      <h2>{{ package.name }}</h2>
 
-                        <a href="{{url_for('allPackages')}}"><button type="button">Back to index</button> </a>
-            <h2>{{ package.name }} </h2>
+      <button type="button" class="collapsible">More</button>
+      <div class="shortDescriptionContent">
+        <p>{{ package.descriptionBeginning}}</p>
+      </div>
+      <div class="allDescriptionContent">
+        <p>{{package.descriptionAll}}</p>
+      </div>
+      {% if package.dependencies %}
+      <p>Dependencies</p>
+      {% for dependency in package.dependencies%}
+      <ul class="dependencyList">
+        <li>
+          <a href="{{url_for('singlePackage', packageName = dependency)}}">
+            {{ dependency}}</a
+          >
+        </li>
+      </ul>
+      {% endfor %} {% endif %} {% if package.dependants %}
+      <p>dependants</p>
+      {% for dependant in package.dependantLinks%}
 
-            <button type="button" class="collapsible">More </button>
-            <div class="shortDescriptionContent">
-            <p>{{ package.descriptionBeginning}} </p>
-            </div>
-            <div class="allDescriptionContent">
-                    <p>{{package.descriptionAll}} </p>
-            </div>
-                {% if package.dependencies %}
-                <p>Dependencies</p>
-                {% for dependency in package.dependencies%}
-                    <ul class = "dependencyList">
-                            <a href="{{url_for('singlePackage', packageName = dependency)}}"><li> {{ dependency}}</li></a>
-                    </ul>
-                {% endfor %}
-                {% endif %}
+      <ul class="dependantList">
+        <li>
+          {%for name,href in dependant.content%} {% if href%}
+          <a href="{{href}}">
+            {{name}}
+          </a>
+          {% else %} {{name}} {% endif%} {% endfor %}
+        </li>
+      </ul>
+      {% endfor %} {% endif %}
+    </div>
 
-                {% if package.dependants %}
-                <p>dependants</p>
-                {% for dependant in package.dependants%}
-
-                    <ul class = "dependantList">
-                            <a href="{{url_for('singlePackage', packageName = dependant)}}"><li> {{ dependant }}</li></a>
-                    </ul>
-                {% endfor %}
-                {% endif %}
-                </div>
-
-                <script>
-var coll = document.getElementsByClassName("collapsible");
-var i;
-for (i = 0; i < coll.length; i++){
-  coll[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var descriptionAll= document.getElementsByClassName("allDescriptionContent")[0];
-    var descriptionShort= document.getElementsByClassName("shortDescriptionContent")[0];
-    if (descriptionAll.style.display === "block") {
-      descriptionAll.style.display = "none";
-      descriptionShort.style.display = "block";
-    } else {
-      descriptionAll.style.display = "block";
-      descriptionShort.style.display = "none";
-    }
-  });
-}
-</script>
-    </body>
+    <script>
+      var coll = document.getElementsByClassName("collapsible");
+      var i;
+      for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var descriptionAll = document.getElementsByClassName(
+            "allDescriptionContent"
+          )[0];
+          var descriptionShort = document.getElementsByClassName(
+            "shortDescriptionContent"
+          )[0];
+          if (descriptionAll.style.display === "block") {
+            descriptionAll.style.display = "none";
+            descriptionShort.style.display = "block";
+          } else {
+            descriptionAll.style.display = "block";
+            descriptionShort.style.display = "none";
+          }
+        });
+      }
+    </script>
+  </body>
 </html>
