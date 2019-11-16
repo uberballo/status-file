@@ -1,8 +1,14 @@
 class DependencyLink:
-    def __init__(self,name,hrefName=""):
-        self.name = [name,"asd"]
-        self.href = ["/packages/{}".format(hrefName),None]
-        self.content = zip(self.name,self.href)
+    def __init__(self,name,hrefNames=[]):
+        self.name = name
+        self.href = []
+        for hrefName in hrefNames:
+            if hrefName:
+                self.href.append("/packages/{}".format(hrefName))
+            else:
+                self.href.append(None)
+        self.content = []
+        self.content = list(zip(self.name,self.href))
 
 class Package:
     def __init__(self, name, descriptionBeginning, descriptionAll, dependencies):
@@ -27,10 +33,9 @@ class Package:
     def getDependencies(self):
         return self.dependencies
     
-    def addDependency(self,dependencyName):
-        self.dependencyLinks.append(DependencyLink(dependencyName))
+    def addDependency(self,dependencyName,hrefName=None):
+        self.dependencyLinks.append(DependencyLink(dependencyName,hrefName))
 
     def addDependant(self, other):
-        self.dependantLinks.append(DependencyLink(other,other))
-        self.dependants.append(other)
+        self.dependantLinks.append(DependencyLink([other],[other]))
 

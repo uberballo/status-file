@@ -21,7 +21,6 @@ def allPackages(errorMessage = ""):
     if not packages:
         path = "status.real" 
         packages = parsePackages(path)
-        findDependants(packages)
     return render_template('index.html', packages = packages,errorMessage =
                            errorMessage)
 
@@ -30,6 +29,7 @@ def singlePackage(packageName):
     try:
         shownPackage = next(package for package in packages if package.name ==
                             packageName)
+        print(shownPackage.dependencyLinks)
         return render_template('package.html', package=shownPackage)
     except:
         errorMessage = "Error {} occured".format(sys.exc_info()[0])
@@ -48,7 +48,7 @@ def handleFileUpload():
 
                     global packages
                     packages = parsePackages(path)
-                    findDependants(packages)
+                    #findDependants(packages)
 
                     return render_template('index.html', packages = packages)
             else:

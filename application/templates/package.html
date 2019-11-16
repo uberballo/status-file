@@ -22,21 +22,24 @@
       <div class="allDescriptionContent">
         <p>{{package.descriptionAll}}</p>
       </div>
-      {% if package.dependencies %}
+      {% if package.dependencyLinks%}
       <p>Dependencies</p>
-      {% for dependency in package.dependencies%}
       <ul class="dependencyList">
+        {% for dependency in package.dependencyLinks%}
         <li>
-          <a href="{{url_for('singlePackage', packageName = dependency)}}">
-            {{ dependency}}</a
-          >
+          {%for name,href in dependency.content%} {% if href%}
+          <a href="{{href}}">
+            {{name}}
+          </a>
+          {% else %} {{name}} {% endif%} {% endfor %}
         </li>
+        {% endfor %}
       </ul>
-      {% endfor %} {% endif %} {% if package.dependants %}
+      {% endif %} {% if package.dependantLinks%}
       <p>dependants</p>
-      {% for dependant in package.dependantLinks%}
-
       <ul class="dependantList">
+        {% for dependant in package.dependantLinks%}
+
         <li>
           {%for name,href in dependant.content%} {% if href%}
           <a href="{{href}}">
@@ -44,8 +47,9 @@
           </a>
           {% else %} {{name}} {% endif%} {% endfor %}
         </li>
+        {% endfor %}
       </ul>
-      {% endfor %} {% endif %}
+      {% endif %}
     </div>
 
     <script>

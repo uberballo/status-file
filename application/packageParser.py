@@ -48,6 +48,8 @@ def parsePackages(fileLocation):
 
 
         listOfPackages.sort(key=lambda package: package.name)
+        findDependants(listOfPackages)
+        handlePackageDependencies(listOfPackages)
         return listOfPackages
 
 
@@ -63,6 +65,21 @@ def findDependants(listOfPackages):
 
 def handlePackageDependencies(listOfPackages):
     for package in listOfPackages:
-        for dependecy in package.dependencies:
-            if dependency in listOfPackages:
-                package.addDependency(dependency)
+        for dependency in package.dependencies:
+            splittedDepencyList = filter(None,re.split("(\|.+)",dependency))
+            names = []
+            hrefNames = []
+            for splittedDependency in splittedDepencyList:
+                trimmedSplittedDependency = splittedDependency.replace("|","").strip()
+                foundDependency = next((x for x in listOfPackages if trimmedSplittedDependency==
+                             x.name), None)
+                print(foundDependency)
+                if foundDependency:
+                    names.append(splittedDependency)
+                    hrefNames.append(trimmedSplittedDependency)
+                else:
+                    names.append(splittedDependency)
+                    hrefNames.append(None)
+            package.addDependency(names,hrefNames)
+
+
