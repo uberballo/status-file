@@ -29,7 +29,6 @@ def singlePackage(packageName):
     try:
         shownPackage = next(package for package in packages if package.name ==
                             packageName)
-        print(shownPackage.dependencyLinks)
         return render_template('package.html', package=shownPackage)
     except:
         errorMessage = "Error {} occured".format(sys.exc_info()[0])

@@ -17,7 +17,6 @@ class Package:
         self.descriptionAll= descriptionAll
         self.dependencies= dependencies
         self.dependencyLinks = []
-        self.dependants = []
         self.dependantLinks = []
         self.href = "/packages/{}".format(name)
 
