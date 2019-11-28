@@ -1,35 +1,39 @@
- *{
-         font-family:helvetica;
- }
- body{
-         background-color:#eee2dc8f;
- }
+* {
+  font-family: helvetica;
+}
+body {
+  background-color: #eee2dc8f;
+}
 
-.content{
-         display: none;
- }
- .container{
-     text-align:center;
-     display: table;
-     margin: auto;
-     padding: 10px;
-     border: 3px Gray; 
-     background-color: #dcac98;
-     border-radius:10px;
-     width:50%
- }
- p{
-         color:#0c0909
- }
- .dependencyList, .dependantList{
-     list-style-type:none;
-     background-color:#ec7266;
-     color:#EDF5E1;
-     padding: 5px;
-     border-radius:10px;
- 
- 
- }
- .allDescriptionContent{
-         display:none;
- }    
+.content {
+  display: none;
+}
+.container {
+  text-align: center;
+  display: table;
+  margin: auto;
+  padding: 10px;
+  border: 3px Gray;
+  background-color: #dcac98;
+  border-radius: 10px;
+  width: 50%;
+}
+p {
+  color: #0c0909;
+}
+
+.dependencyList,
+.dependantList {
+  list-style-type: none;
+  padding: 0 1em;
+}
+
+li {
+  border-radius: 10px;
+  background-color: #ec7266;
+  padding: 5px;
+  margin: 1em 0;
+}
+.allDescriptionContent {
+  display: none;
+}
