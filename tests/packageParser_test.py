@@ -45,8 +45,9 @@ def test_packageContainsCorrectDependencies(parsedPackages):
         "libwrap0"
     ]
     assert(len(testPackageDependencies) == len(correctDependencies))
+    correctAndTestDependencies = zip(correctDependencies, testPackageDependencies)
     assert(all(a == b for a,b in
-               zip(correctDependencies, testPackageDependencies)))
+               correctAndTestDependencies))
 
 def test_packageDependantsAreCorrect(parsedPackages):
     findDependants(parsedPackages)

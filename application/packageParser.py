@@ -45,8 +45,8 @@ def parsePackages(fileLocation):
 
 
         listOfPackages.sort(key=lambda package: package.name)
-        findDependants(listOfPackages)
         handlePackageDependencies(listOfPackages)
+        findDependants(listOfPackages)
         return listOfPackages
 
 
