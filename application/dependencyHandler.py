@@ -1,43 +1,41 @@
 import re
 
 
-def findDependants(tupleOfPackages):
-    newTupleOfPackages = ()
-    for package in tupleOfPackages:
-        if package.dependencies:
-            for dependency in package.dependencies:
-                dependant = next(
-                    (x for x in tupleOfPackages if dependency == x.name), None)
-                if dependant:
-                    dependant.addDependant(package.name)
-        newTupleOfPackages = newTupleOfPackages + (package, )
-    return newTupleOfPackages
-
-
-def handlePackageDependencies(tupleOfPackages):
-    newTupleOfPackages = ()
-    for package in tupleOfPackages:
+def findDependants(package, tupleOfPackages):
+    if package.dependencies:
         for dependency in package.dependencies:
-            names = []
-            hrefNames = []
-            splittedDepencyList = filter(None, re.split("(\|.+)", dependency))
+            dependant = next(
+                (x for x in tupleOfPackages if dependency == x.name), None)
+            if dependant:
+                dependant.addDependant(package.name)
+    return package
 
-            for splittedDependency in splittedDepencyList:
-                foundDependency = next(
-                    (x for x in tupleOfPackages if splittedDependency == x.name), None)
 
-                names.append(splittedDependency)
-                hrefNames.append(
-                    splittedDependency if foundDependency else None)
+def handlePackageDependencies(package, tupleOfPackages):
+    for dependency in package.dependencies:
+        names = []
+        hrefNames = []
+        splittedDepencyList = filter(None, re.split("(\|.+)", dependency))
 
-                package.addDependency(names, hrefNames)
+        for splittedDependency in splittedDepencyList:
+            foundDependency = next(
+                (x for x in tupleOfPackages if splittedDependency == x.name), None)
 
-        newTupleOfPackages = newTupleOfPackages + (package,)
-    return newTupleOfPackages
+            names.append(splittedDependency)
+            hrefNames.append(
+                splittedDependency if foundDependency else None)
+
+            package.addDependency(names, hrefNames)
+
+    return package
 
 
 def createDependencies(tupleOfPackages):
     newTupleOfPackages = ()
-    newTupleOfPackages = handlePackageDependencies(tupleOfPackages)
-    newTupleOfPackages = findDependants(newTupleOfPackages)
+    for package in tupleOfPackages:
+        newPackage = handlePackageDependencies(package, tupleOfPackages)
+        newPackage = findDependants(newPackage, tupleOfPackages)
+        print(package.name)
+        newTupleOfPackages = newTupleOfPackages + (newPackage,)
+
     return newTupleOfPackages

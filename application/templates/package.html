@@ -30,7 +30,7 @@
         <li>
           {%for name,href in dependency.content%} {% if href%}
           <a href="{{href}}">
-            {{name}}
+            {{ name }}
           </a>
           {% else %} {{name}} {% endif%} {% endfor %}
         </li>
