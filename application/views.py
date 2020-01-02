@@ -3,7 +3,6 @@ import sys
 from flask import Flask, request, render_template, url_for, redirect
 from werkzeug.utils import secure_filename
 from application import app
-#from application.packageParser import parsePackages, findDependants
 from application.packageHandler import getPackageData
 
 os.makedirs(os.path.join(app.instance_path, 'status'), exist_ok=True)
@@ -51,7 +50,6 @@ def handleFileUpload():
 
                     global packages
                     packages = getPackageData(path)
-                    # findDependants(packages)
 
                     return render_template('index.html', packages=packages)
             else:

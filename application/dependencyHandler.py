@@ -35,7 +35,6 @@ def createDependencies(tupleOfPackages):
     for package in tupleOfPackages:
         newPackage = handlePackageDependencies(package, tupleOfPackages)
         newPackage = findDependants(newPackage, tupleOfPackages)
-        print(package.name)
         newTupleOfPackages = newTupleOfPackages + (newPackage,)
 
     return newTupleOfPackages

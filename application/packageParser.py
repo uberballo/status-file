@@ -1,7 +1,12 @@
 import re
 from time import time
 from application.package import Package
-from application.regexPatterns import *
+
+packagePattern = re.compile(r'(?<=(Package: )).*')
+searchDependencyPattern = re.compile(r'(?<=Depends: ).*')
+replaceMiscDependcyPattern = re.compile(r'\s|\((.*?)\)')
+newSearchDescriptionPattern = re.compile(
+    r'(?<=Description: )(.*\n)*?(?=^[A-Z](\d|\D)*:)', re.MULTILINE)
 
 
 def parsePackages(fileLocation):
@@ -20,8 +25,6 @@ def parsePackages(fileLocation):
 def handleLine(line):
     name = getPackageName(line)
     description = getDescription(line)
-    if not description:
-        print(name)
     dependencies = getDependencies(line)
     package = Package(name,  description, dependencies)
     return package
