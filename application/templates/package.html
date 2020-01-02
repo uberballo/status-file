@@ -15,15 +15,16 @@
       </a>
       <h2>{{ package.name }}</h2>
 
+      {% if package.descriptionBeginning%}
       <button type="button" class="collapsible">More</button>
       <div class="shortDescriptionContent">
-        <p>{{ package.descriptionBeginning}}</p>
+        <pre>{{ package.descriptionBeginning}}</pre>
       </div>
       <div class="allDescriptionContent">
-        <p>{{package.descriptionAll}}</p>
+        <pre>{{package.descriptionAll}}</pre>
       </div>
-      {% if package.dependencyLinks%}
-      <p>Dependencies</p>
+      {% endif %} {% if package.dependencyLinks%}
+      <p><b>Dependencies</b></p>
       <ul class="dependencyList">
         {% for dependency in package.dependencyLinks%}
         <li>
@@ -36,7 +37,7 @@
         {% endfor %}
       </ul>
       {% endif %} {% if package.dependantLinks%}
-      <p>dependants</p>
+      <p><b>dependants</b></p>
       <ul class="dependantList">
         {% for dependant in package.dependantLinks%}
 

@@ -3,81 +3,47 @@ from time import time
 from application.package import Package
 from application.regexPatterns import *
 
+
 def parsePackages(fileLocation):
-    listOfPackages = []
-    with open(fileLocation, "r") as f:
-        name = ""
-        descriptionBeginning = ""
-        description = ""
-        dependencies = []
-        descriptionFound = False
+    tupleOfPackages = ()
+    try:
+        with open(fileLocation, "r") as f:
+            listOfLines = filter(None, f.read().split("\n\n"))
 
-        for line in f:
-            if not descriptionFound:
-
-                if re.match(packagePattern, line):
-                   name = re.search(searchPackagePattern, line).group()
-
-                if re.match(dependencyPattern, line):
-                   foundDependencies = re.search(searchDependencyPattern, line).group()
-                   foundDependencies = re.sub(replaceMiscDependcyPattern, '', foundDependencies)
-                   dependencies = re.split(',', foundDependencies)
-                   dependencies = list(set(dependencies))
-
-                if re.match(descriptionPattern, line):
-                   descriptionBeginning= re.search(searchDescriptionPattern, line).group()
-                   description =  line
-                   descriptionFound = True
-            else:
-                description = description + line
-
-                if line == "\n" :
-                    description = re.search(searchWholeDescriptionPattern, description)
-                    if description:
-                        description =description.group()
-                        description = re.sub('Homepage: .*','',description)
-
-                    package = Package(name, descriptionBeginning,description, dependencies)
-                    listOfPackages.append(package)
-                    descriptionFound = False
-                    name, descriptionBeginning, descriptionFound, description  = "","","",""
-                    dependencies = []
+            for line in listOfLines:
+                tupleOfPackages = tupleOfPackages + (handleLine(line),)
+        return tupleOfPackages
+    except:
+        return ()
 
 
-        listOfPackages.sort(key=lambda package: package.name)
-        handlePackageDependencies(listOfPackages)
-        findDependants(listOfPackages)
-        return listOfPackages
+def handleLine(line):
+    name = getPackageName(line)
+    description = getDescription(line)
+    if not description:
+        print(name)
+    dependencies = getDependencies(line)
+    package = Package(name,  description, dependencies)
+    return package
 
 
-def findDependants(listOfPackages):
-    for package in listOfPackages:
-        packageDepencies = package.dependencies
-        if (packageDepencies):
-            for dependency in packageDepencies:
-                dependant = next((x for x in listOfPackages if dependency ==
-                             x.name), None)
-                if dependant:
-                    dependant.addDependant(package.name)
+def getPackageName(line):
+    packageName = re.search(packagePattern, line)
+    return packageName.group() if packageName else None
 
-def handlePackageDependencies(listOfPackages):
-    for package in listOfPackages:
-        for dependency in package.dependencies:
-            splittedDepencyList = filter(None,re.split("(\|.+)",dependency))
-            names = []
-            hrefNames = []
 
-            for splittedDependency in splittedDepencyList:
-                trimmedSplittedDependency = splittedDependency.replace("|","").strip()
-                foundDependency = next((x for x in listOfPackages if trimmedSplittedDependency==
-                             x.name), None)
+def getDescription(line):
+    description = re.search(newSearchDescriptionPattern, line)
+    return description.group() if description else None
 
-                if foundDependency:
-                    names.append(splittedDependency)
-                    hrefNames.append(trimmedSplittedDependency)
 
-                else:
-                    names.append(splittedDependency)
-                    hrefNames.append(None)
-            package.addDependency(names,hrefNames)
+def getDependencies(line):
+    try:
+        dependencies = re.search(searchDependencyPattern, line).group()
+        dependencies = re.sub(
+            replaceMiscDependcyPattern, '', dependencies)
+        dependencies = dependencies.split(",")
 
+        return dependencies
+    except:
+        return []
