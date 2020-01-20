@@ -1,16 +1,5 @@
 import re
 
-
-def findDependants(package, tupleOfPackages):
-    if package.dependencies:
-        for dependency in package.dependencies:
-            dependant = next(
-                (x for x in tupleOfPackages if dependency == x.name), None)
-            if dependant:
-                dependant.addDependant(package.name)
-    return package
-
-
 def handlePackageDependencies(package, tupleOfPackages):
     for dependency in package.dependencies:
         names = []
@@ -29,6 +18,14 @@ def handlePackageDependencies(package, tupleOfPackages):
 
     return package
 
+def findDependants(package, tupleOfPackages):
+    if package.dependencies:
+        for dependency in package.dependencies:
+            dependant = next(
+                (x for x in tupleOfPackages if dependency == x.name), None)
+            if dependant:
+                dependant.addDependant(package.name)
+    return package
 
 def createDependencies(tupleOfPackages):
     newTupleOfPackages = ()

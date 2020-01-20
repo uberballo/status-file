@@ -1,5 +1,5 @@
 import pytest
-from application.packageParser import parsePackages,findDependants
+from application.packageHandler import getPackageData
 
 correctPackages = [
     "java-common",
@@ -16,7 +16,7 @@ correctPackages = [
 
 @pytest.fixture
 def parsedPackages():
-    return parsePackages("tests/testStatus")
+    return getPackageData("tests/testStatus")
 
 def findCorrectPackage(parsedPackages,name):
     return  next(package for package in parsedPackages if
@@ -50,7 +50,6 @@ def test_packageContainsCorrectDependencies(parsedPackages):
                correctAndTestDependencies))
 
 def test_packageDependantsAreCorrect(parsedPackages):
-    findDependants(parsedPackages)
     testPackage = findCorrectPackage(parsedPackages, "libtext-charwidth-perl")
     assert(testPackage.dependantLinks[0].name[0] == "libtext-wrapi18n-perl")
 
